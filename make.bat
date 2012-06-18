@@ -7,10 +7,11 @@ set BOOTSTRAP_RESPONSIVE_LESS=.\less\responsive.less
 set HR=##################################################
 
 if "%1" equ "bootstrap" goto bootstrap
+if "%1" equ "watch" goto watch
 
-REM
-REM BUILD DOCS
-REM
+::
+:: BUILD DOCS
+::
 
 echo. && echo %HR%
 echo Building Bootstrap...
@@ -42,10 +43,10 @@ echo %HR% && echo.
 echo Thanks for using Bootstrap, && echo ^<3 @mdo and @fat && echo.
 goto :EOF
 
-REM
-REM BUILD SIMPLE BOOTSTRAP DIRECTORY
-REM recess & uglifyjs are required
-REM
+::
+:: BUILD SIMPLE BOOTSTRAP DIRECTORY
+:: recess & uglifyjs are required
+::
 
 :bootstrap
 md bootstrap\img
@@ -61,3 +62,12 @@ call uglifyjs -nc bootstrap\js\bootstrap.js > bootstrap\js\bootstrap.min.tmp.js
 (echo /** && echo * Bootstrap.js by @fat ^& @mdo && echo * Copyright 2012 Twitter, Inc. && echo * http://www.apache.org/licenses/LICENSE-2.0.txt && echo */) > bootstrap\js\copyright.js
 cat bootstrap\js\copyright.js bootstrap\js\bootstrap.min.tmp.js > bootstrap\js\bootstrap.min.js
 del bootstrap\js\copyright.js bootstrap\js\bootstrap.min.tmp.js
+goto :EOF
+
+::
+:: WATCH LESS FILES
+::
+
+:watch
+echo Watching LESS files...
+watchr -e "watch('less\/.*\.less') { system 'make.bat' }"
